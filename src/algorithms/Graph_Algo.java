@@ -99,8 +99,7 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 	@Override
 	public boolean isConnected() {
 		//Hold all the vertices in graph g
-		if(this.g.getV().size() == 0) return false;
-
+		if(this.g.getV().size() == 0) return true;
 		for (node_data vertex : this.g.getV()) {
 			if(checkConnected(vertex) != this.g.nodeSize())
 				return false;
@@ -131,6 +130,7 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 			vertex.setTag(0);
 	}
 
+	
 	@Override
 	public double shortestPathDist(int src, int dest) {
 		if(dest>this.g.getV().size()) return -1;
@@ -153,11 +153,18 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 		}
 
 		node_data current = this.g.getNode(src);
-		while(unChecked.isEmpty() || Infinity(g)) {
+		
+		while(!unChecked.isEmpty() || Infinity(g) || current != null) {
 			checked.add(current);
 			unChecked.remove(current);
+			System.out.println(current);
 			Collection<edge_data> e = this.g.getE(current.getKey());
-			if(e==null) break;
+			if(e==null) {
+
+				current = unvistedmin(unChecked);
+				if(current==null) break;
+				continue;
+			}
 
 			for(edge_data edge : e) {
 				node_data destVertex = this.g.getNode(edge.getDest());
@@ -167,6 +174,8 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 				}
 			}
 			current = unvistedmin(unChecked);	
+			if(current==null) break;
+
 		}
 	}
 
@@ -225,6 +234,7 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 		return path;
 	}
 
+	
 	@Override
 	public graph copy() {
 		graph c = new DGraph((DGraph) this.g);
@@ -241,28 +251,30 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 		return ans;
 	}
 
+	
 	public static void main(String[] args) {
 		Graph_Algo test = new Graph_Algo();
 		test.g.addNode(new Node());
 		test.g.addNode(new Node(1));
 		test.g.addNode(new Node(2));
 		test.g.addNode(new Node(3));
+		test.g.addNode(new Node(4));
 
 		test.g.connect(0, 1, 1);
 		test.g.connect(0, 3, 3);
 		test.g.connect(3, 0, 3);
 		test.g.connect(1, 2, 1);
 		test.g.connect(2, 0, 2);
-		test.dijakstra(0);
+		test.g.connect(1, 4, 1);
 		
-		System.out.println(test.shortestPath(0, 2).toString());
+		//test.dijakstra(0);
+		
+		//System.out.println(test.shortestPath(0, 2).toString());
 		List<Integer> t = new ArrayList<>();
 		t.add(0);
 		t.add(2);
-		System.out.println(test.TSP(t).toString());
+		System.out.println(test.isConnected());
 
-		test.save("g.txt");
-		test.init("g.txt");
 	}
 
 }

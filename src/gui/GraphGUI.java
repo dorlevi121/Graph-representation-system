@@ -1,6 +1,7 @@
 package gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Menu;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -60,7 +62,8 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 		this.setSize(800, 550);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
-
+		this.setTitle("Graph Maker");
+		this.setLocations();
 		initMenu();
 
 	}
@@ -69,7 +72,9 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 	private void initMenu() {
 		MenuBar menuBar = new MenuBar();
 		this.setMenuBar(menuBar);
+		Font f = new Font("ARIEL", Font.BOLD, 12);
 
+		menuBar.setFont(f);
 		Menu menu = new Menu("Menu");
 		Menu algo = new Menu("Algorithems");
 		menuBar.add(menu);
@@ -90,6 +95,10 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 		MenuItem addEdge = new MenuItem("Add Edge");
 		addEdge.addActionListener(this);
 		menu.add(addEdge);
+		
+		MenuItem addNode = new MenuItem("Add Node");
+		addNode.addActionListener(this);
+		menu.add(addNode);
 
 		//Algorithms
 		MenuItem isconnect = new MenuItem("isConnect");
@@ -241,6 +250,16 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 
 	
 	
+	public void addVertex() {
+		String numOfVertex=  JOptionPane.showInputDialog("Please input the vertex key");
+		Node n = new Node(Integer.parseInt(numOfVertex));
+		this.grp.addNode(n);
+		this.setLocations(n);
+		repaint();
+	}
+	
+	
+	
 	public void SP() {
 		Graph_Algo g =new Graph_Algo((DGraph)this.grp);		
 		String src=  JOptionPane.showInputDialog("Please input the source vretex");
@@ -305,6 +324,28 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 
 	
 	
+	 private void setLocations() {
+	        Random rand = new Random();
+	        for (node_data node : grp.getV()) {
+	            double x = rand.nextInt((int) (this.getWidth() / 1.5)) + 50;
+	            double y = rand.nextInt((int) (this.getHeight() / 1.5)) + 70;
+	            Point3D p = new Point3D(x, y);
+	            node.setLocation(p);
+	        }
+	    }
+	 
+	 
+	 private void setLocations(Node node) {
+	        Random rand = new Random();
+	            double x = rand.nextInt((int) (this.getWidth() / 1.5)) + 50;
+	            double y = rand.nextInt((int) (this.getHeight() / 1.5)) + 70;
+	            Point3D p = new Point3D(x, y);
+	            node.setLocation(p);
+	        
+	    }
+	 
+	 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String str = e.getActionCommand();
@@ -316,6 +357,8 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 		case "Load File"     :load();
 		break;
 		case "Add Edge"     :addEdge();
+		break;
+		case "Add Node"		:addVertex();
 		break;
 		case "Save as a image" :saveImg();
 		break;
@@ -346,22 +389,50 @@ public final class GraphGUI  extends JFrame implements ActionListener, MouseList
 		Point3D p3 = new Point3D(154, 152);
 		Point3D p4 = new Point3D(455, 151);
 		Point3D p5 = new Point3D(687, 206);
+		Point3D p6 = new Point3D(500, 306);
+		Point3D p7 = new Point3D(230, 350);
+		Point3D p8 = new Point3D(290, 320);
+		Point3D p9 = new Point3D(550, 430);
+		Point3D p10 = new Point3D(600, 306);
+
 		Node n1 = new Node(p1, 0);
 		Node n2 = new Node(p2, 1);
 		Node n3 = new Node(p3, 2);
 		Node n4 = new Node(p4, 3);
+		Node n5 = new Node(p5, 4);
+		Node n6 = new Node(p6, 5);
+		Node n7 = new Node(p7, 6);
+		Node n8 = new Node(p8, 7);
+		Node n9 = new Node(p9, 8);
+		Node n10 = new Node(p10, 9);
 
 		
 		g.addNode(n1);
 		g.addNode(n2);
 		g.addNode(n3);
 		g.addNode(n4);
-		
+		g.addNode(n5);
+		g.addNode(n6);
+		g.addNode(n7);
+		g.addNode(n8);
+		g.addNode(n9);
+		g.addNode(n10);
+
 		g.connect(0, 1, 1);
 		g.connect(0, 3, 3);
 		g.connect(1, 2, 1);
 		g.connect(2, 0, 2);
 		g.connect(3, 0, 3);
+		g.connect(4, 3, 3);
+		g.connect(5, 4, 3);
+		g.connect(6, 5, 3);
+		g.connect(7, 6, 3);
+		g.connect(8, 7, 3);
+		g.connect(9, 8, 3);
+		g.connect(9, 0, 3);
+		g.connect(7, 2, 3);
+		g.connect(2, 6, 3);
+		g.connect(9, 7, 3);
 
 
 
