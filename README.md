@@ -1,4 +1,4 @@
-# Graph Representation System - Object Oriented Programmin Project
+# Graph Representation System
 The system allows the user to construct directed graphs and manipulate the graphs using graph algorithms.
 The whole system can be operated by UI
 
